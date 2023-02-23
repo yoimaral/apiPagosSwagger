@@ -1,12 +1,13 @@
 package io.swagger;
 
-import io.swagger.configuration.LocalDateConverter;
-import io.swagger.configuration.LocalDateTimeConverter;
+import io.swagger.configuration.LocalDateCon;
+import io.swagger.configuration.LocalDateTimeConv;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 import springfox.documentation.oas.annotations.EnableOpenApi;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableOpenApi
 @ComponentScan(basePackages = { "io.swagger", "io.swagger.api" , "io.swagger.configuration"})
 public class Swagger2SpringBoot implements CommandLineRunner {
@@ -35,8 +36,8 @@ public class Swagger2SpringBoot implements CommandLineRunner {
     static class CustomDateConfig extends WebMvcConfigurerAdapter {
         @Override
         public void addFormatters(FormatterRegistry registry) {
-            registry.addConverter(new LocalDateConverter("yyyy-MM-dd"));
-            registry.addConverter(new LocalDateTimeConverter("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+            registry.addConverter(new LocalDateCon("yyyy-MM-dd"));
+            registry.addConverter(new LocalDateTimeConv("yyyy-MM-dd'T'HH:mm:ss.SSS"));
         }
     }
 

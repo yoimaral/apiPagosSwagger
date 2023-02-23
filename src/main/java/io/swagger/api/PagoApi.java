@@ -5,7 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Pago;
+import io.swagger.dto.PagoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,23 +14,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2023-02-15T04:20:31.519478174Z[GMT]")
 @Validated
@@ -38,13 +30,13 @@ public interface PagoApi {
 
     @Operation(summary = "", description = "Consultar los pagos", tags={ "Pago" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Pago.class)))),
+        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PagoDto.class)))),
         
         @ApiResponse(responseCode = "400", description = "error") })
     @RequestMapping(value = "/pago",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Pago>> pagoGet();
+    ResponseEntity<List<PagoDto>> pagoGet();
 
 
     @Operation(summary = "Eliminar un pago", description = "", tags={ "Pago" })
@@ -59,13 +51,13 @@ public interface PagoApi {
 
     @Operation(summary = "Consultar un pago", description = "Permite obtener un pago con el ID", tags={ "Pago" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Pago.class))),
+        @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PagoDto.class))),
         
         @ApiResponse(responseCode = "404", description = "Id invalido") })
     @RequestMapping(value = "/pago/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Pago> pagoIdGet(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id);
+    ResponseEntity<PagoDto> pagoIdGet(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id);
 
 
     @Operation(summary = "Actualizar un pago", description = "Actualizar un pago existente", tags={ "Pago" })
@@ -76,19 +68,19 @@ public interface PagoApi {
     @RequestMapping(value = "/pago/{id}",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<Void> pagoIdPut(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id, @Parameter(in = ParameterIn.DEFAULT, description = "Actualizacion de pago", schema=@Schema()) @Valid @RequestBody Pago body);
+    ResponseEntity<Void> pagoIdPut(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id, @Parameter(in = ParameterIn.DEFAULT, description = "Actualizacion de pago", schema=@Schema()) @Valid @RequestBody PagoDto body);
 
 
     @Operation(summary = "", description = "Permite crear un pago", tags={ "Pago" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Pago exitoso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Pago.class))),
+        @ApiResponse(responseCode = "200", description = "Pago exitoso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PagoDto.class))),
         
         @ApiResponse(responseCode = "400", description = "error") })
     @RequestMapping(value = "/pago",
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Pago> pagoPost(@Parameter(in = ParameterIn.DEFAULT, description = "Creacion de pago", schema=@Schema()) @Valid @RequestBody Pago body);
+    ResponseEntity<PagoDto> pagoPost(@Parameter(in = ParameterIn.DEFAULT, description = "Creacion de pago", schema=@Schema()) @Valid @RequestBody PagoDto body);
 
 }
 

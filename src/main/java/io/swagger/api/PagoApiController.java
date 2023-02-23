@@ -1,38 +1,26 @@
 package io.swagger.api;
 
-import io.swagger.model.Pago;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.dto.PagoDto;
+import io.swagger.servicio.PagoServicio;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
-import javax.validation.Valid;
+import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2023-02-15T04:20:31.519478174Z[GMT]")
+@Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2023-02-15T04:20:31.519478174Z[GMT]")
 @RestController
 public class PagoApiController implements PagoApi {
 
@@ -42,63 +30,79 @@ public class PagoApiController implements PagoApi {
 
     private final HttpServletRequest request;
 
+    private final PagoServicio pagoServicio;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public PagoApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+
+    @Autowired
+    public PagoApiController(ObjectMapper objectMapper, HttpServletRequest request, PagoServicio pagoServicio) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.pagoServicio = pagoServicio;
     }
 
-    public ResponseEntity<List<Pago>> pagoGet() {
+    public ResponseEntity<List<PagoDto>> pagoGet() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Pago>>(objectMapper.readValue("[ {\n  \"nombrePagador\" : \"yoimar\",\n  \"valor\" : 5000,\n  \"id\" : \"79459506-9bc2-43c8-bd0c-379239de5fb5\",\n  \"emailPagador\" : \"yoimar@gmail.com\",\n  \"referencia\" : 10\n}, {\n  \"nombrePagador\" : \"yoimar\",\n  \"valor\" : 5000,\n  \"id\" : \"79459506-9bc2-43c8-bd0c-379239de5fb5\",\n  \"emailPagador\" : \"yoimar@gmail.com\",\n  \"referencia\" : 10\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                List<PagoDto> pagoDtos = pagoServicio.obtenerTodosLosPagos();
+                return new ResponseEntity<List<PagoDto>>(pagoDtos, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Pago>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<List<PagoDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<List<Pago>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<List<PagoDto>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> pagoIdDelete(@Parameter(in = ParameterIn.PATH, description = "Eliminar con el ID", required=true, schema=@Schema()) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            pagoServicio.eliminarPago(id);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Pago> pagoIdGet(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id) {
+    public ResponseEntity<PagoDto> pagoIdGet(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Pago>(objectMapper.readValue("{\n  \"nombrePagador\" : \"yoimar\",\n  \"valor\" : 5000,\n  \"id\" : \"79459506-9bc2-43c8-bd0c-379239de5fb5\",\n  \"emailPagador\" : \"yoimar@gmail.com\",\n  \"referencia\" : 10\n}", Pago.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                PagoDto pagoDto = pagoServicio.obtenerPago(id);
+                return new ResponseEntity<PagoDto>(pagoDto, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Pago>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<PagoDto>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Pago>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<PagoDto>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> pagoIdPut(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id,@Parameter(in = ParameterIn.DEFAULT, description = "Actualizacion de pago", schema=@Schema()) @Valid @RequestBody Pago body) {
+    public ResponseEntity<Void> pagoIdPut(@Parameter(in = ParameterIn.PATH, description = "referencia de pago", required=true, schema=@Schema()) @PathVariable("id") String id,@Parameter(in = ParameterIn.DEFAULT, description = "Actualizacion de pago", schema=@Schema()) @Valid @RequestBody PagoDto body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            pagoServicio.actualizarPago(id, body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }catch (NotFoundException exception){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    public ResponseEntity<Pago> pagoPost(@Parameter(in = ParameterIn.DEFAULT, description = "Creacion de pago", schema=@Schema()) @Valid @RequestBody Pago body) {
+    public ResponseEntity<PagoDto> pagoPost(@Parameter(in = ParameterIn.DEFAULT, description = "Creacion de pago", schema=@Schema()) @Valid @RequestBody PagoDto body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Pago>(objectMapper.readValue("{\n  \"nombrePagador\" : \"yoimar\",\n  \"valor\" : 5000,\n  \"id\" : \"79459506-9bc2-43c8-bd0c-379239de5fb5\",\n  \"emailPagador\" : \"yoimar@gmail.com\",\n  \"referencia\" : 10\n}", Pago.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
+                PagoDto pagoDto = pagoServicio.crearPago(body);
+                return new ResponseEntity<PagoDto>(pagoDto, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Pago>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<PagoDto>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Pago>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<PagoDto>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
