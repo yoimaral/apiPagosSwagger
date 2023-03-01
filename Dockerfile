@@ -1,6 +1,6 @@
     FROM openjdk:8
 
-    //Crea una carpeta para que los comandos se ejecutenahí
+    //Crea una carpeta para que los comandos se ejecuten ahí
     WORCKDIR /app
 
     //Para copiar el archivo de dependencias hacia la imagen de docker
@@ -15,7 +15,7 @@
     //Aqui estoy agregando el archivo ejecutable. Al final se le puede dar un nombre al ejecutable
     ADD . /target/swagger-spring-1.0.0.jar Ejecutable.jar
 
-    //Son loscomandos que se van a ejecutar cuando se inicie la imagen
+    //Son los comandos que se van a ejecutar cuando se inicie la imagen
     ENTRYPOINT ["java", "-jar", "/Ejecutable.jar"]
 
 
