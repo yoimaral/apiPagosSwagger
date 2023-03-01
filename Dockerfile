@@ -11,5 +11,3 @@
 
 
     ENTRYPOINT ["java", "-jar", "/ejecutable.jar"]
-
-
