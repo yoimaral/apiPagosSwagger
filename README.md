@@ -1,6 +1,8 @@
-# Swagger generated server
+# apiPagosSwagger generated server API
 
-Spring Boot Server 
+In this repository you will find a project carried out with Swagger, in order to train Junior devops developers, carried out for the DEVCO company, to whom I thank the opportunity.
+
+This project is a payments API.
 
 
 ## Overview  
@@ -16,3 +18,36 @@ You can view the api documentation in swagger-ui by pointing to
 http://localhost:8080/  
 
 Change default port value in application.properties
+
+# Pre-requirements 📋
+- Java 8
+- It was implemented with the Maven framework for its execution. This is optional since you can implement the one of your preference.
+- Windows operating system (Optional).
+
+### Implementaciones
+
+# Swagger
+
+Swagger is an open source software toolset for designing, building, documenting, and using RESTful web services. It was developed by SmartBear Software and includes automated documentation, code generation, and test case generation.
+
+# Spring Boot
+
+Is a tool that makes developing web applications and microservices with the Spring Framework faster and easier
+
+# BD H2
+
+Is a relational database management system written in Java.
+
+# Docker
+
+Is an open source project that automates the deployment of applications within software containers, providing an additional layer of abstraction and automation of application virtualization across multiple operating systems.
+
+## SonarCloud 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=yoimaral_apipagosswagger)
+
+For detection of problems in Bitbucket repositories.
+
+
+## GitHub Actions
+
+Is a continuous integration and deployment (CI/DC) platform that allows you to automate your build, test, and deployment roadmap.
